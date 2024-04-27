@@ -26,7 +26,7 @@ function MenubarFile( editor ) {
 	option.setTextContent( strings.getKey( 'menubar/file/new' ) );
 	option.onClick( function () {
 
-		if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
+		if ( window.confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
 
 			editor.clear();
 

@@ -391,7 +391,7 @@ KTX2Loader.EngineFormat = {
 /* WEB WORKER */
 
 KTX2Loader.BasisWorker = function () {
-
+	const self = this;
 	let config;
 	let transcoderPending;
 	let BasisModule;

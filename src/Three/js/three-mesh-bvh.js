@@ -60,6 +60,7 @@ function ensureIndex( geo, options ) {
 	if ( ! geo.index ) {
 
 		const vertexCount = geo.attributes.position.count;
+		// eslint-disable-next-line no-undef
 		const BufferConstructor = options.useSharedArrayBuffer ? SharedArrayBuffer : ArrayBuffer;
 		const index = getIndexArray( vertexCount, BufferConstructor );
 		geo.setIndex( new BufferAttribute( index, 1 ) );
@@ -1043,7 +1044,7 @@ function generateIndirectBuffer( geometry, useSharedArrayBuffer ) {
 	const triCount = ( geometry.index ? geometry.index.count : geometry.attributes.position.count ) / 3;
 	const useUint32 = triCount > 2 ** 16;
 	const byteCount = useUint32 ? 4 : 2;
-
+	// eslint-disable-next-line no-undef
 	const buffer = useSharedArrayBuffer ? new SharedArrayBuffer( triCount * byteCount ) : new ArrayBuffer( triCount * byteCount );
 	const indirectBuffer = useUint32 ? new Uint32Array( buffer ) : new Uint16Array( buffer );
 	for ( let i = 0, l = indirectBuffer.length; i < l; i ++ ) {
@@ -1192,7 +1193,8 @@ function buildPackedTree( bvh, options ) {
 
 	}
 
-	const BufferConstructor = options.useSharedArrayBuffer ? SharedArrayBuffer : ArrayBuffer;
+	// eslint-disable-next-line no-undef
+	const BufferConstructor = options.useSharedArrayBuffer ?  SharedArrayBuffer : ArrayBuffer;
 
 	const triangleBounds = computeTriangleBounds( geometry );
 	const geometryRanges = options.indirect ? getFullGeometryRange( geometry ) : getRootIndexRanges( geometry );
@@ -4675,7 +4677,7 @@ function closestPointToGeometry_indirect(
 		target1.point.copy( tempTargetDest1 );
 
 	}
-
+	// eslint-disable-next-line no-undef
 	target1.distance = closestDistance,
 	target1.faceIndex = closestDistanceTriIndex;
 
@@ -6086,7 +6088,7 @@ function estimateMemoryInBytes( obj ) {
 				if ( isTypedArray( value ) ) {
 
 					bytes += value.byteLength;
-
+				// eslint-disable-next-line no-undef
 				} else if ( isSharedArrayBufferSupported() && value instanceof SharedArrayBuffer ) {
 
 					bytes += value.byteLength;

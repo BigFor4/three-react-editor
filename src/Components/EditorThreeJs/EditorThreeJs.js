@@ -76,7 +76,7 @@ export default function ThreeEditor() {
         const hash = window.location.hash;
         if (hash.slice(1, 6) === 'file=') {
             const file = hash.slice(6);
-            if (window.confirm('Any unsaved data will be lost. Are you sure?')) {
+            if (window.window.confirm('Any unsaved data will be lost. Are you sure?')) {
                 const loader = new THREE.FileLoader();
                 loader.crossOrigin = '';
                 loader.load(file, (text) => {

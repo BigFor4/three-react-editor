@@ -41,7 +41,7 @@ function MenubarExamples( editor ) {
 			option.setTextContent( strings.getKey( item.title ) );
 			option.onClick( function () {
 
-				if ( confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
+				if ( window.confirm( 'Any unsaved data will be lost. Are you sure?' ) ) {
 
 					loader.load( 'examples/' + item.file, function ( text ) {
 

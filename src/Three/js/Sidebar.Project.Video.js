@@ -65,8 +65,8 @@ function SidebarProjectVideo( editor ) {
 		canvas.style.width = width + 'px';
 		canvas.style.height = height + 'px';
 
-		const left = ( screen.width - width ) / 2;
-		const top = ( screen.height - height ) / 2;
+		const left = ( window.screen.width - width ) / 2;
+		const top = ( window.screen.height - height ) / 2;
 
 		const output = window.open( '', '_blank', `location=no,left=${left},top=${top},width=${width},height=${height}` );
 
