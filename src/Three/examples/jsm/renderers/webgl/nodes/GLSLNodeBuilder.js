@@ -5,7 +5,7 @@ import NodeUniformsGroup from '../../common/nodes/NodeUniformsGroup.js';
 
 import { NodeSampledTexture, NodeSampledCubeTexture } from '../../common/nodes/NodeSampledTexture.js';
 
-import { RedFormat, RGFormat, IntType, DataTexture, RGBFormat, RGBAFormat, FloatType } from 'three';
+import { RedFormat, RGFormat, IntType, DataTexture, RGBFormat, RGBAFormat, FloatType } from '../../../../../build/three.module.js';
 
 const glslMethods = {
 	[ MathNode.ATAN2 ]: 'atan',

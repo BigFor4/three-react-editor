@@ -2,7 +2,7 @@
 import 'https://greggman.github.io/webgpu-avoid-redundant-state-setting/webgpu-check-redundant-state-setting.js';
 //*/
 
-import { WebGPUCoordinateSystem } from 'three';
+import { WebGPUCoordinateSystem } from '../../../../build/three.module.js';
 
 import { GPUFeatureName, GPUTextureFormat, GPULoadOp, GPUStoreOp, GPUIndexFormat, GPUTextureViewDimension } from './utils/WebGPUConstants.js';
 

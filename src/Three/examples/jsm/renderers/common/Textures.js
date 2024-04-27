@@ -1,6 +1,6 @@
 import DataMap from './DataMap.js';
 
-import { Vector3, DepthTexture, DepthStencilFormat, DepthFormat, UnsignedIntType, UnsignedInt248Type, LinearFilter, NearestFilter, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeReflectionMapping, CubeRefractionMapping, UnsignedByteType } from 'three';
+import { Vector3, DepthTexture, DepthStencilFormat, DepthFormat, UnsignedIntType, UnsignedInt248Type, LinearFilter, NearestFilter, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeReflectionMapping, CubeRefractionMapping, UnsignedByteType } from '../../../../build/three.module.js';
 
 const _size = new Vector3();
 

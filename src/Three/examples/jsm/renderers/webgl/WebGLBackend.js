@@ -1,4 +1,4 @@
-import { WebGLCoordinateSystem } from 'three';
+import { WebGLCoordinateSystem } from '../../../../../build/three.module.js';
 
 import GLSLNodeBuilder from './nodes/GLSLNodeBuilder.js';
 import Backend from '../common/Backend.js';

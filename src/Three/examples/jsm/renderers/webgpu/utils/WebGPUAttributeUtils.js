@@ -1,4 +1,4 @@
-import { Float16BufferAttribute } from 'three';
+import { Float16BufferAttribute } from '../../../../../build/three.module.js';
 import { GPUInputStepMode } from './WebGPUConstants.js';
 
 const typedArraysToVertexFormatPrefix = new Map( [

@@ -1,6 +1,6 @@
 import DataMap from './DataMap.js';
 import { AttributeType } from './Constants.js';
-import { Uint32BufferAttribute, Uint16BufferAttribute } from 'three';
+import { Uint32BufferAttribute, Uint16BufferAttribute } from '../../../../build/three.module.js';
 
 function arrayNeedsUint32( array ) {
 

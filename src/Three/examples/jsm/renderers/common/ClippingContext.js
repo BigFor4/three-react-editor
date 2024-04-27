@@ -1,4 +1,4 @@
-import { Matrix3, Plane, Vector4 } from 'three';
+import { Matrix3, Plane, Vector4 } from '../../../../build/three.module.js';
 
 const _plane = new Plane();
 const _viewNormalMatrix = new Matrix3();

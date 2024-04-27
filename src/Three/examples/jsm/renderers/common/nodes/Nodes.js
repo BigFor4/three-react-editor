@@ -1,7 +1,7 @@
 import DataMap from '../DataMap.js';
 import ChainMap from '../ChainMap.js';
 import NodeBuilderState from './NodeBuilderState.js';
-import { EquirectangularReflectionMapping, EquirectangularRefractionMapping, NoToneMapping, SRGBColorSpace } from 'three';
+import { EquirectangularReflectionMapping, EquirectangularRefractionMapping, NoToneMapping, SRGBColorSpace } from '../../../../../build/three.module.js';
 import { NodeFrame, vec4, objectGroup, renderGroup, frameGroup, cubeTexture, texture, rangeFog, densityFog, reference, viewportBottomLeft, normalWorld, pmremTexture, viewportTopLeft } from '../../../nodes/Nodes.js';
 
 class Nodes extends DataMap {

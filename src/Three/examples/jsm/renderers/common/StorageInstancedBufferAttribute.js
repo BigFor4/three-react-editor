@@ -1,4 +1,4 @@
-import { InstancedBufferAttribute } from 'three';
+import { InstancedBufferAttribute } from '../../../../build/three.module.js';
 
 class StorageInstancedBufferAttribute extends InstancedBufferAttribute {
 
