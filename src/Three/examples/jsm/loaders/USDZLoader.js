@@ -14,7 +14,7 @@ import {
 	TextureLoader,
 	Object3D,
 	Vector2
-} from 'three';
+} from '../../../build/three.module.js';
 
 import * as fflate from '../libs/fflate.module.js';
 

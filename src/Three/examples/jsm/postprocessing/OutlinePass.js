@@ -12,7 +12,7 @@ import {
 	Vector2,
 	Vector3,
 	WebGLRenderTarget
-} from 'three';
+} from '../../../build/three.module.js';
 import { Pass, FullScreenQuad } from './Pass.js';
 import { CopyShader } from '../shaders/CopyShader.js';
 

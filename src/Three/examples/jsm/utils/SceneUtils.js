@@ -6,7 +6,7 @@ import {
 	Matrix4,
 	Mesh,
 	Vector3
-} from 'three';
+} from '../../../build/three.module.js';
 
 import { mergeGroups, deepCloneAttribute } from './BufferGeometryUtils.js';
 

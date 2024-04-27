@@ -1,4 +1,4 @@
-import { Vector2 } from 'three';
+import { Vector2 } from '../../../build/three.module.js';
 
 class SelectionHelper {
 

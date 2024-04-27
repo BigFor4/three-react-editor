@@ -1,4 +1,4 @@
-import { BufferGeometry, Float32BufferAttribute, Mesh, OrthographicCamera } from 'three';
+import { BufferGeometry, Float32BufferAttribute, Mesh, OrthographicCamera } from '../../../build/three.module.js';
 
 // Helper for passes that need to fill the viewport with a single quad.
 

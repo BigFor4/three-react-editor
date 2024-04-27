@@ -1,6 +1,6 @@
 import {
 	Mesh
-} from 'three';
+} from '../../../build/three.module.js';
 import InstancedPointsGeometry from '../geometries/InstancedPointsGeometry.js';
 import InstancedPointsNodeMaterial from '../nodes/materials/InstancedPointsNodeMaterial.js';
 

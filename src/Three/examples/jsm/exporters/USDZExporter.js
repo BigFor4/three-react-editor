@@ -1,7 +1,7 @@
 import {
 	NoColorSpace,
 	DoubleSide,
-} from 'three';
+} from '../../../build/three.module.js';
 
 import {
 	strToU8,

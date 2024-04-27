@@ -4,7 +4,7 @@ import {
 	FileLoader,
 	Float32BufferAttribute,
 	Loader
-} from 'three';
+} from '../../../build/three.module.js';
 
 class XYZLoader extends Loader {
 

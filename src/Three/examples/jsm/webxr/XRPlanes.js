@@ -4,7 +4,7 @@ import {
 	Mesh,
 	MeshBasicMaterial,
 	Object3D
-} from 'three';
+} from '../../../build/three.module.js';
 
 class XRPlanes extends Object3D {
 

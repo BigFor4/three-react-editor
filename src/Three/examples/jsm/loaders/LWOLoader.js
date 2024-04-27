@@ -37,7 +37,7 @@ import {
 	SRGBColorSpace,
 	TextureLoader,
 	Vector2
-} from 'three';
+} from '../../../build/three.module.js';
 
 import { IFFParser } from './lwo/IFFParser.js';
 

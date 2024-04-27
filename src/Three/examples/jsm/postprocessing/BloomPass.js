@@ -5,7 +5,7 @@ import {
 	UniformsUtils,
 	Vector2,
 	WebGLRenderTarget
-} from 'three';
+} from '../../../build/three.module.js';
 import { Pass, FullScreenQuad } from './Pass.js';
 import { ConvolutionShader } from '../shaders/ConvolutionShader.js';
 

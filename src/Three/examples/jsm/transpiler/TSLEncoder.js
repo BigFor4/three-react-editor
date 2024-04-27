@@ -1,4 +1,4 @@
-import { REVISION } from 'three';
+import { REVISION } from '../../../build/three.module.js';
 import { VariableDeclaration, Accessor } from './AST.js';
 import * as Nodes from '../nodes/Nodes.js';
 

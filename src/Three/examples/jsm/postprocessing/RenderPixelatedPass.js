@@ -7,7 +7,7 @@ import {
 	DepthTexture,
 	NearestFilter,
 	HalfFloatType
-} from 'three';
+} from '../../../build/three.module.js';
 import { Pass, FullScreenQuad } from './Pass.js';
 
 class RenderPixelatedPass extends Pass {

@@ -16,7 +16,7 @@ import {
 	ShaderMaterial,
 	Vector2,
 	WebGLRenderTarget
-} from 'three';
+} from '../../../build/three.module.js';
 
 import { surfaceNet } from './../libs/surfaceNet.js';
 

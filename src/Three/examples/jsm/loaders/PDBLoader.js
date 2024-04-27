@@ -4,7 +4,7 @@ import {
 	Float32BufferAttribute,
 	Loader,
 	Color
-} from 'three';
+} from '../../../build/three.module.js';
 
 class PDBLoader extends Loader {
 

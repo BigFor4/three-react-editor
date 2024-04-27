@@ -1,4 +1,4 @@
-import { Clock, Vector3, Quaternion, Matrix4 } from 'three';
+import { Clock, Vector3, Quaternion, Matrix4 } from '../../../build/three.module.js';
 
 const JOLT_PATH = 'https://cdn.jsdelivr.net/npm/jolt-physics@0.23.0/dist/jolt-physics.wasm-compat.js';
 

@@ -1,7 +1,7 @@
-import { ShaderMaterial, NoBlending, Vector2, WebGLRenderTarget, FloatType, RGBAFormat, NearestFilter, Vector4, NormalBlending, Color, HalfFloatType, Vector3, MathUtils, Matrix4, PerspectiveCamera, BufferAttribute, MeshBasicMaterial, BufferGeometry, Mesh, Camera, SpotLight, RectAreaLight, Spherical, DataTexture, EquirectangularReflectionMapping, RepeatWrapping, ClampToEdgeWrapping, LinearFilter, DoubleSide, BackSide, FrontSide, WebGLArrayRenderTarget, UnsignedByteType, NoToneMapping, DataUtils, Source, RedFormat, Quaternion, Loader, FileLoader, PMREMGenerator, DataArrayTexture, RGFormat, MeshStandardMaterial, BoxGeometry } from 'three';
-import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass.js';
+import { ShaderMaterial, NoBlending, Vector2, WebGLRenderTarget, FloatType, RGBAFormat, NearestFilter, Vector4, NormalBlending, Color, HalfFloatType, Vector3, MathUtils, Matrix4, PerspectiveCamera, BufferAttribute, MeshBasicMaterial, BufferGeometry, Mesh, Camera, SpotLight, RectAreaLight, Spherical, DataTexture, EquirectangularReflectionMapping, RepeatWrapping, ClampToEdgeWrapping, LinearFilter, DoubleSide, BackSide, FrontSide, WebGLArrayRenderTarget, UnsignedByteType, NoToneMapping, DataUtils, Source, RedFormat, Quaternion, Loader, FileLoader, PMREMGenerator, DataArrayTexture, RGFormat, MeshStandardMaterial, BoxGeometry } from '../build/three.module.js';
+import { FullScreenQuad } from '../examples/jsm/postprocessing/Pass.js';
 import { StaticGeometryGenerator, MeshBVH, SAH, FloatVertexAttributeTexture, MeshBVHUniformStruct, UIntVertexAttributeTexture, BVHShaderGLSL } from './three-mesh-bvh.js';
-import { mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { mergeVertices } from '../examples/jsm/utils/BufferGeometryUtils.js';
 
 class MaterialBase extends ShaderMaterial {
 

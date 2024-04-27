@@ -1,4 +1,4 @@
-import { Color } from 'three';
+import { Color } from '../../../build/three.module.js';
 
 /**
  * Export draco compressed files from threejs geometry objects.

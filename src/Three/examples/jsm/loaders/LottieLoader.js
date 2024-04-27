@@ -4,7 +4,7 @@ import {
 	CanvasTexture,
 	NearestFilter,
 	SRGBColorSpace
-} from 'three';
+} from '../../../build/three.module.js';
 
 import lottie from '../libs/lottie_canvas.module.js';
 

@@ -16,7 +16,7 @@ import {
 	Vector2,
 	WebGLRenderTarget,
 	ZeroFactor
-} from 'three';
+} from '../../../build/three.module.js';
 import { Pass, FullScreenQuad } from './Pass.js';
 import { SAOShader } from '../shaders/SAOShader.js';
 import { DepthLimitedBlurShader } from '../shaders/DepthLimitedBlurShader.js';
