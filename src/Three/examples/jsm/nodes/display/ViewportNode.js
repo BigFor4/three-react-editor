@@ -3,7 +3,7 @@ import { NodeUpdateType } from '../core/constants.js';
 import { uniform } from '../core/UniformNode.js';
 import { nodeImmutable, vec2 } from '../shadernode/ShaderNode.js';
 
-import { Vector2, Vector4 } from 'three';
+import { Vector2, Vector4 } from '../../../../build/three.module.js';
 
 let resolution, viewportResult;
 

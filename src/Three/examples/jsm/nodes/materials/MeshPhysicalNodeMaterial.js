@@ -7,7 +7,7 @@ import { TBNViewMatrix } from '../accessors/AccessorsUtils.js';
 import PhysicalLightingModel from '../functions/PhysicalLightingModel.js';
 import MeshStandardNodeMaterial from './MeshStandardNodeMaterial.js';
 import { mix, pow2, min } from '../math/MathNode.js';
-import { MeshPhysicalMaterial } from 'three';
+import { MeshPhysicalMaterial } from '../../../../build/three.module.js';
 
 const defaultValues = new MeshPhysicalMaterial();
 

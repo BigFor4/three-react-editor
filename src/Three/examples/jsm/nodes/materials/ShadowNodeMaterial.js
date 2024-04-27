@@ -1,7 +1,7 @@
 import NodeMaterial, { addNodeMaterial } from './NodeMaterial.js';
 import ShadowMaskModel from '../functions/ShadowMaskModel.js';
 
-import { ShadowMaterial } from 'three';
+import { ShadowMaterial } from '../../../../build/three.module.js';
 
 const defaultValues = new ShadowMaterial();
 

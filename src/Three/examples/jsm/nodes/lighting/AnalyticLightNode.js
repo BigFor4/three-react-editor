@@ -7,10 +7,10 @@ import { reference } from '../accessors/ReferenceNode.js';
 import { texture } from '../accessors/TextureNode.js';
 import { positionWorld } from '../accessors/PositionNode.js';
 import { normalWorld } from '../accessors/NormalNode.js';
-import { WebGPUCoordinateSystem } from 'three';
+import { WebGPUCoordinateSystem } from '../../../../build/three.module.js';
 //import { add } from '../math/OperatorNode.js';
 
-import { Color, DepthTexture, NearestFilter, LessCompare, NoToneMapping } from 'three';
+import { Color, DepthTexture, NearestFilter, LessCompare, NoToneMapping } from '../../../../build/three.module.js';
 
 let overrideMaterial = null;
 

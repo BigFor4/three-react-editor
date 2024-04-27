@@ -5,7 +5,7 @@ import { uv } from '../accessors/UVNode.js';
 import { texture } from '../accessors/TextureNode.js';
 import { texturePass } from './PassNode.js';
 import { uniform } from '../core/UniformNode.js';
-import { RenderTarget } from 'three';
+import { RenderTarget } from '../../../../build/three.module.js';
 import { sign, max } from '../math/MathNode.js';
 import QuadMesh from '../../objects/QuadMesh.js';
 

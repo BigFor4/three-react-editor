@@ -1,7 +1,7 @@
-import { EventDispatcher } from 'three';
+import { EventDispatcher } from '../../../../build/three.module.js';
 import { NodeUpdateType } from './constants.js';
 import { getNodeChildren, getCacheKey } from './NodeUtils.js';
-import { MathUtils } from 'three';
+import { MathUtils } from '../../../../build/three.module.js';
 
 const NodeClasses = new Map();
 

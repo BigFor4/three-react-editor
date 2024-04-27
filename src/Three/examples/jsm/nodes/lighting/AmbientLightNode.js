@@ -2,7 +2,7 @@ import AnalyticLightNode from './AnalyticLightNode.js';
 import { addLightNode } from './LightsNode.js';
 import { addNodeClass } from '../core/Node.js';
 
-import { AmbientLight } from 'three';
+import { AmbientLight } from '../../../../build/three.module.js';
 
 class AmbientLightNode extends AnalyticLightNode {
 

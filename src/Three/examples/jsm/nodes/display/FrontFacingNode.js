@@ -1,6 +1,6 @@
 import Node, { addNodeClass } from '../core/Node.js';
 import { nodeImmutable, float } from '../shadernode/ShaderNode.js';
-import { BackSide, WebGLCoordinateSystem } from 'three';
+import { BackSide, WebGLCoordinateSystem } from '../../../../build/three.module.js';
 
 class FrontFacingNode extends Node {
 

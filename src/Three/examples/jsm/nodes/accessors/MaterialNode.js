@@ -4,7 +4,7 @@ import { materialReference } from './MaterialReferenceNode.js';
 import { normalView } from './NormalNode.js';
 import { nodeImmutable, float, vec2, mat2 } from '../shadernode/ShaderNode.js';
 import { uniform } from '../core/UniformNode.js';
-import { Vector2 } from 'three';
+import { Vector2 } from '../../../../build/three.module.js';
 
 const _propertyCache = new Map();
 

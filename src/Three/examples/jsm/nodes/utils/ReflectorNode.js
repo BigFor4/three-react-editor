@@ -2,7 +2,7 @@ import TextureNode from '../accessors/TextureNode.js';
 import { nodeObject, vec2 } from '../shadernode/ShaderNode.js';
 import { NodeUpdateType } from '../core/constants.js';
 import { viewportTopLeft } from '../display/ViewportNode.js';
-import { Matrix4, Vector2, Vector3, Vector4, Object3D, Plane, RenderTarget, HalfFloatType, LinearMipMapLinearFilter } from 'three';
+import { Matrix4, Vector2, Vector3, Vector4, Object3D, Plane, RenderTarget, HalfFloatType, LinearMipMapLinearFilter } from '../../../../build/three.module.js';
 
 const _reflectorPlane = new Plane();
 const _normal = new Vector3();

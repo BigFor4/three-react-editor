@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from '../../build/three.module.js';
 
 import { KTX2Loader } from '../../examples/jsm/loaders/KTX2Loader.js';
 import { RGBELoader } from '../../examples/jsm/loaders/RGBELoader.js';

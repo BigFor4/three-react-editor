@@ -4,7 +4,7 @@ import { instancedBufferAttribute, instancedDynamicBufferAttribute } from './Buf
 import { normalLocal } from './NormalNode.js';
 import { positionLocal } from './PositionNode.js';
 import { nodeProxy, vec3, mat3, mat4 } from '../shadernode/ShaderNode.js';
-import { DynamicDrawUsage, InstancedInterleavedBuffer, InstancedBufferAttribute } from 'three';
+import { DynamicDrawUsage, InstancedInterleavedBuffer, InstancedBufferAttribute } from '../../../../build/three.module.js';
 
 class InstanceNode extends Node {
 

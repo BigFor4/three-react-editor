@@ -6,7 +6,7 @@ import { modelViewMatrix, modelWorldMatrix } from '../accessors/ModelNode.js';
 import { positionLocal } from '../accessors/PositionNode.js';
 import { float, vec2, vec3, vec4 } from '../shadernode/ShaderNode.js';
 
-import { SpriteMaterial } from 'three';
+import { SpriteMaterial } from '../../../../build/three.module.js';
 
 const defaultValues = new SpriteMaterial();
 

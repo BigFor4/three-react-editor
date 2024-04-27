@@ -1,4 +1,4 @@
-import { Material, ShaderMaterial } from 'three';
+import { Material, ShaderMaterial } from '../../../../build/three.module.js';
 import { getNodeChildren, getCacheKey } from '../core/NodeUtils.js';
 import { attribute } from '../core/AttributeNode.js';
 import { output, diffuseColor, varyingProperty } from '../core/PropertyNode.js';

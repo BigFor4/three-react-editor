@@ -1,5 +1,5 @@
-import * as THREE from 'three';
-import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass.js';
+import * as THREE from '../build/three.module.js';
+import { FullScreenQuad } from '../examples/jsm/postprocessing/Pass.js';
 import {
 	PathTracingSceneGenerator,
 	PathTracingRenderer,

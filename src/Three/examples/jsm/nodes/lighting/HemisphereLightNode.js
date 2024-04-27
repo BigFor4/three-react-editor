@@ -6,7 +6,7 @@ import { normalView } from '../accessors/NormalNode.js';
 import { objectPosition } from '../accessors/Object3DNode.js';
 import { addNodeClass } from '../core/Node.js';
 
-import { Color, HemisphereLight } from 'three';
+import { Color, HemisphereLight } from '../../../../build/three.module.js';
 
 class HemisphereLightNode extends AnalyticLightNode {
 

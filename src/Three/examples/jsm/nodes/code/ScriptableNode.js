@@ -292,7 +292,7 @@ class ScriptableNode extends Node {
 
 		const parameters = new Parameters( this );
 
-		const THREE = global.get( 'THREE' );
+		const THREE = global.get( '../../../../build/three.module.js' );
 		const TSL = global.get( 'TSL' );
 
 		const method = this.getMethod( this.codeNode );
@@ -394,7 +394,7 @@ class ScriptableNode extends Node {
 
 		//
 
-		const parametersProps = [ 'parameters', 'local', 'global', 'refresh', 'setOutput', 'THREE', 'TSL' ];
+		const parametersProps = [ 'parameters', 'local', 'global', 'refresh', 'setOutput', '../../../../build/three.module.js', 'TSL' ];
 		const interfaceProps = [ 'layout', 'init', 'main', 'dispose' ];
 
 		const properties = interfaceProps.join( ', ' );

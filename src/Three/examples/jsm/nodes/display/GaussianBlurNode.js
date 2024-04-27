@@ -5,7 +5,7 @@ import { mul } from '../math/OperatorNode.js';
 import { uv } from '../accessors/UVNode.js';
 import { texturePass } from './PassNode.js';
 import { uniform } from '../core/UniformNode.js';
-import { Vector2, RenderTarget } from 'three';
+import { Vector2, RenderTarget } from '../../../../build/three.module.js';
 import QuadMesh from '../../objects/QuadMesh.js';
 
 // WebGPU: The use of a single QuadMesh for both gaussian blur passes results in a single RenderObject with a SampledTexture binding that

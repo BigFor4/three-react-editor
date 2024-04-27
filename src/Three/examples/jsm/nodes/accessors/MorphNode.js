@@ -8,7 +8,7 @@ import { normalLocal } from './NormalNode.js';
 import { textureLoad } from './TextureNode.js';
 import { instanceIndex, vertexIndex } from '../core/IndexNode.js';
 import { ivec2, int } from '../shadernode/ShaderNode.js';
-import { DataArrayTexture, Vector2, Vector4, FloatType } from 'three';
+import { DataArrayTexture, Vector2, Vector4, FloatType } from '../../../../build/three.module.js';
 import { loop } from '../utils/LoopNode.js';
 
 const morphTextures = new WeakMap();
