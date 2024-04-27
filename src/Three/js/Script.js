@@ -1,4 +1,94 @@
 /* eslint-disable */
+import CodeMirror from 'codemirror';
+import tern from 'tern';
+CodeMirror.TernServer = function (options) {
+    var self = this;
+    this.options = options || {};
+    var plugins = this.options.plugins || (this.options.plugins = {});
+    if (!plugins.doc_comment) plugins.doc_comment = true;
+    this.docs = Object.create(null);
+    if (this.options.useWorker) {
+      this.server = new WorkerServer(this);
+    } else {
+      this.server = new tern.Server({
+        getFile: function (name, c) { return getFile(self, name, c); },
+        async: true,
+        defs: this.options.defs || [],
+        plugins: plugins
+      });
+    }
+    this.trackChange = function (doc, change) { trackChange(self, doc, change); };
+
+    this.cachedArgHints = null;
+    this.activeArgHints = null;
+    this.jumpStack = [];
+
+    this.getHint = function (cm, c) { return hint(self, cm, c); };
+    this.getHint.async = true;
+  };
+
+  CodeMirror.TernServer.prototype = {
+    addDoc: function (name, doc) {
+      var data = { doc: doc, name: name, changed: null };
+      this.server.addFile(name, docValue(this, data));
+      CodeMirror.on(doc, "change", this.trackChange);
+      return this.docs[name] = data;
+    },
+
+    delDoc: function (id) {
+      var found = resolveDoc(this, id);
+      if (!found) return;
+      CodeMirror.off(found.doc, "change", this.trackChange);
+      delete this.docs[found.name];
+      this.server.delFile(found.name);
+    },
+
+    hideDoc: function (id) {
+      closeArgHints(this);
+      var found = resolveDoc(this, id);
+      if (found && found.changed) sendDoc(this, found);
+    },
+
+    complete: function (cm) {
+      cm.showHint({ hint: this.getHint });
+    },
+
+    showType: function (cm, pos, c) { showContextInfo(this, cm, pos, "type", c); },
+
+    showDocs: function (cm, pos, c) { showContextInfo(this, cm, pos, "documentation", c); },
+
+    updateArgHints: function (cm) { updateArgHints(this, cm); },
+
+    jumpToDef: function (cm) { jumpToDef(this, cm); },
+
+    jumpBack: function (cm) { jumpBack(this, cm); },
+
+    rename: function (cm) { rename(this, cm); },
+
+    selectName: function (cm) { selectName(this, cm); },
+
+    request: function (cm, query, c, pos) {
+      var self = this;
+      var doc = findDoc(this, cm.getDoc());
+      var request = buildRequest(this, doc, query, pos);
+      var extraOptions = request.query && this.options.queryOptions && this.options.queryOptions[request.query.type]
+      if (extraOptions) for (var prop in extraOptions) request.query[prop] = extraOptions[prop];
+
+      this.server.request(request, function (error, data) {
+        if (!error && self.options.responseFilter)
+          data = self.options.responseFilter(doc, query, request, error, data);
+        c(error, data);
+      });
+    },
+
+    destroy: function () {
+      closeArgHints(this)
+      if (this.worker) {
+        this.worker.terminate();
+        this.worker = null;
+      }
+    }
+  };
 import { UIElement, UIPanel, UIText } from './libs/ui.js';
 
 import { SetScriptValueCommand } from './commands/SetScriptValueCommand.js';

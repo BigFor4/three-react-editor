@@ -136,7 +136,7 @@ const hash = window.location.hash;
 if (hash.slice(1, 6) === "file=") {
     const file = hash.slice(6);
 
-    if (confirm("Any unsaved data will be lost. Are you sure?")) {
+    if (window.confirm("Any unsaved data will be lost. Are you sure?")) {
         const loader = new THREE.FileLoader();
         loader.crossOrigin = "";
         loader.load(file, function (text) {
@@ -154,4 +154,7 @@ if ("serviceWorker" in navigator) {
     try {
         navigator.serviceWorker.register("sw.js");
     } catch (error) { }
+}
+export {
+    editor, toolbar, sidebar, menubar, resizer, viewport, script, player, THREE
 }

@@ -1,3 +1,5 @@
+/* eslint-disable */
+import CodeMirror from 'codemirror';
 // Full source: 
 //
 // 		https://github.com/hughsk/glsl-editor 
