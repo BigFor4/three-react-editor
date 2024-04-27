@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>three.js editor</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <link rel="stylesheet" href="../src/Three/css/main.css" />
+    <link rel="stylesheet" href="../src/Three/js/libs/codemirror/codemirror.css" />
+    <link rel="stylesheet" href="../src/Three/js/libs/codemirror/theme/monokai.css" />
+    <link rel="stylesheet" href="../src/Three/js/libs/codemirror/addon/dialog.css" />
+    <link rel="stylesheet" href="../src/Three/js/libs/codemirror/addon/show-hint.css" />
+    <link rel="stylesheet" href="../src/Three/js/libs/codemirror/addon/tern.css" />
+
+    <script src="../src/Three/compile.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../src/Three/build/three.module.js",
+          "three/addons/": "../src/Three/examples/jsm/",
+          "three/examples/": "../src/Three/examples/",
+          "three-gpu-pathtracer": "../src/Three/js/three-gpu-pathtracer.js",
+          "three-mesh-bvh": "../src/Three/js/three-mesh-bvh.js"
+        }
+      }
+    </script>
+
+    <script type="module" src="../src/Three/three-editor.js"></script>
+  </body>
+</html>
