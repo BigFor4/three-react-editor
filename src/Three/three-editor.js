@@ -9,27 +9,14 @@ import { Sidebar } from "./js/Sidebar.js";
 import { Menubar } from "./js/Menubar.js";
 import { Resizer } from "./js/Resizer.js";
 
-window.URL = window.URL || window.webkitURL;
-window.BlobBuilder =
-    window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-
-Number.prototype.format = function () {
-    return this.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-};
-
-const editor = new Editor();
-
-const viewport = new Viewport(editor);
-
-const toolbar = new Toolbar(editor);
-
-const script = new Script(editor);
-const player = new Player(editor);
-
-const sidebar = new Sidebar(editor);
-
-const menubar = new Menubar(editor);
-const resizer = new Resizer(editor);
 export {
-    editor, toolbar, sidebar, menubar, resizer, viewport, script, player, THREE
+    THREE, 
+    Editor,
+    Viewport,
+    Toolbar,
+    Script,
+    Player,
+    Menubar,
+    Sidebar,
+    Resizer
 }

@@ -20,7 +20,6 @@ import { RoomEnvironment } from '../examples/jsm/environments/RoomEnvironment.js
 import { ViewportPathtracer } from './Viewport.Pathtracer.js';
 
 function Viewport( editor ) {
-
 	const selector = editor.selector;
 	const signals = editor.signals;
 
@@ -539,7 +538,9 @@ function Viewport( editor ) {
 				useBackgroundAsEnvironment = true;
 
 				scene.environment = scene.background;
-				scene.environment.mapping = THREE.EquirectangularReflectionMapping;
+				if (scene.environment) {
+					scene.environment.mapping = THREE.EquirectangularReflectionMapping;
+				}
 				scene.environmentRotation.y = scene.backgroundRotation.y;
 
 				break;
@@ -549,7 +550,9 @@ function Viewport( editor ) {
 				if ( environmentEquirectangularTexture ) {
 
 					scene.environment = environmentEquirectangularTexture;
-					scene.environment.mapping = THREE.EquirectangularReflectionMapping;
+					if (scene.environment) {
+						scene.environment.mapping = THREE.EquirectangularReflectionMapping;
+					}
 
 				}
 

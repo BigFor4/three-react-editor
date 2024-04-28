@@ -6,29 +6,43 @@ import '../../Three/js/libs/codemirror/addon/dialog.css'
 import '../../Three/js/libs/codemirror/addon/show-hint.css'
 import '../../Three/js/libs/codemirror/addon/tern.css'
 import {
-    viewport,
-    toolbar,
-    script,
-    player,
-    sidebar,
-    menubar,
-    resizer,
-    editor,
-    THREE
+    THREE,
+    Editor,
+    Viewport,
+    Toolbar,
+    Script,
+    Player,
+    Menubar,
+    Sidebar,
+    Resizer
 } from '../../Three/three-editor';
 export default function ThreeEditor() {
     useEffect(() => {
+        window.URL = window.URL || window.webkitURL;
+        window.BlobBuilder =
+            window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+
+        Number.prototype.format = function () {
+            return this.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        };
+
+        const editor = new Editor();
+        const viewport = new Viewport(editor);
+        const toolbar = new Toolbar(editor);
+        const script = new Script(editor);
+        const player = new Player(editor);
+        const sidebar = new Sidebar(editor);
+        const menubar = new Menubar(editor);
+        const resizer = new Resizer(editor);
+
         document.body.appendChild(viewport.dom);
         document.body.appendChild(toolbar.dom);
         document.body.appendChild(script.dom);
-
         document.body.appendChild(player.dom);
-
         document.body.appendChild(sidebar.dom);
-
         document.body.appendChild(menubar.dom);
-
         document.body.appendChild(resizer.dom);
+
         editor.storage.init(() => {
             editor.storage.get((state) => {
                 if (state !== undefined) {
