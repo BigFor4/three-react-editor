@@ -1,55 +1,9 @@
 /* eslint-disable */
-import CodeMirror from 'codemirror';
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
-
-// Glue code between CodeMirror and Tern.
-//
-// Create a CodeMirror.TernServer to wrap an actual Tern server,
-// register open documents (CodeMirror.Doc instances) with it, and
-// call its methods to activate the assisting functions that Tern
-// provides.
-//
-// Options supported (all optional):
-// * defs: An array of JSON definition data structures.
-// * plugins: An object mapping plugin names to configuration
-//   options.
-// * getFile: A function(name, c) that can be used to access files in
-//   the project that haven't been loaded yet. Simply do c(null) to
-//   indicate that a file is not available.
-// * fileFilter: A function(value, docName, doc) that will be applied
-//   to documents before passing them on to Tern.
-// * switchToDoc: A function(name, doc) that should, when providing a
-//   multi-file view, switch the view or focus to the named file.
-// * showError: A function(editor, message) that can be used to
-//   override the way errors are displayed.
-// * completionTip: Customize the content in tooltips for completions.
-//   Is passed a single argument—the completion's data as returned by
-//   Tern—and may return a string, DOM node, or null to indicate that
-//   no tip should be shown. By default the docstring is shown.
-// * typeTip: Like completionTip, but for the tooltips shown for type
-//   queries.
-// * responseFilter: A function(doc, query, request, error, data) that
-//   will be applied to the Tern responses before treating them
-//
-//
-// It is possible to run the Tern server in a web worker by specifying
-// these additional options:
-// * useWorker: Set to true to enable web worker mode. You'll probably
-//   want to feature detect the actual value you use here, for example
-//   !!window.Worker.
-// * workerScript: The main script of the worker. Point this to
-//   wherever you are hosting worker.js from this directory.
-// * workerDeps: An array of paths pointing (relative to workerScript)
-//   to the Acorn and Tern libraries and any Tern plugins you want to
-//   load. Or, if you minified those into a single script and included
-//   them in the workerScript, simply leave this undefined.
-
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"));
+    mod(require("../codemirror.js"));
   else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
+    define(["../codemirror.js"], mod);
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {

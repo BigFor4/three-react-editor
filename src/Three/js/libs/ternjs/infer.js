@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Main type inference engine
 
 // Walks an AST, building up a graph of abstract values and constraints
@@ -14,10 +15,10 @@
 
 (function(root, mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-    return mod(exports, require("acorn"), require("acorn/dist/acorn_loose"), require("acorn/dist/walk"),
+    return mod(exports, require("acorn"), require("../acorn/acorn_loose.js"), require("../acorn/walk"),
                require("./def"), require("./signal"));
   if (typeof define == "function" && define.amd) // AMD
-    return define(["exports", "acorn/dist/acorn", "acorn/dist/acorn_loose", "acorn/dist/walk", "./def", "./signal"], mod);
+    return define(["exports", "../acorn/acorn.js", "../acorn/acorn_loose.js", "../acorn/walk.js", "./def", "./signal"], mod);
   mod(root.tern || (root.tern = {}), acorn, acorn, acorn.walk, tern.def, tern.signal); // Plain browser env
 })(this, function(exports, acorn, acorn_loose, walk, def, signal) {
   "use strict";

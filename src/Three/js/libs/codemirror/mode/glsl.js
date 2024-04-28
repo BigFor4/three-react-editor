@@ -1,5 +1,5 @@
 /* eslint-disable */
-import CodeMirror from 'codemirror';
+import CodeMirror from '../codemirror.js';
 // Full source: 
 //
 // 		https://github.com/hughsk/glsl-editor 

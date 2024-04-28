@@ -1,4 +1,10 @@
 import React, { useEffect } from 'react';
+import '../../Three/css/main.css'
+import '../../Three/js/libs/codemirror/codemirror.css'
+import '../../Three/js/libs/codemirror/theme/monokai.css'
+import '../../Three/js/libs/codemirror/addon/dialog.css'
+import '../../Three/js/libs/codemirror/addon/show-hint.css'
+import '../../Three/js/libs/codemirror/addon/tern.css'
 import {
     viewport,
     toolbar,

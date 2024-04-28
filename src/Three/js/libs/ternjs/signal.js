@@ -1,3 +1,4 @@
+/* eslint-disable */
 (function(root, mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
     return mod(exports);

@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Type description parser
 //
 // Type description JSON files (such as ecma5.json and browser.json)

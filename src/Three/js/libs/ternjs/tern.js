@@ -1,26 +1,27 @@
+/* eslint-disable */
 // The Tern server object
 
 // A server is a stateful object that manages the analysis for a
 // project, and defines an interface for querying the code in the
 // project.
 
-(function(root, mod) {
+(function (root, mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
     return mod(exports, require("./infer"), require("./signal"),
-               require("acorn"), require("acorn/dist/walk"));
+      require("acorn"), require("../acorn/walk.js"));
   if (typeof define == "function" && define.amd) // AMD
-    return define(["exports", "./infer", "./signal", "acorn/dist/acorn", "acorn/dist/walk"], mod);
+    return define(["exports", "./infer", "./signal", "../acorn/acorn.js", "../acorn/walk.js"], mod);
   mod(root.tern || (root.tern = {}), tern, tern.signal, acorn, acorn.walk); // Plain browser env
-})(this, function(exports, infer, signal, acorn, walk) {
+})(this, function (exports, infer, signal, acorn, walk) {
   "use strict";
 
   var plugins = Object.create(null);
-  exports.registerPlugin = function(name, init) { plugins[name] = init; };
+  exports.registerPlugin = function (name, init) { plugins[name] = init; };
 
   var defaultOptions = exports.defaultOptions = {
     debug: false,
     async: false,
-    getFile: function(_f, c) { if (this.async) c(null, null); },
+    getFile: function (_f, c) { if (this.async) c(null, null); },
     defs: [],
     plugins: {},
     fetchTimeout: 1000,
@@ -64,24 +65,24 @@
     }
   };
 
-  exports.defineQueryType = function(name, desc) { queryTypes[name] = desc; };
+  exports.defineQueryType = function (name, desc) { queryTypes[name] = desc; };
 
   function File(name, parent) {
     this.name = name;
     this.parent = parent;
     this.scope = this.text = this.ast = this.lineOffsets = null;
   }
-  File.prototype.asLineChar = function(pos) { return asLineChar(this, pos); };
+  File.prototype.asLineChar = function (pos) { return asLineChar(this, pos); };
 
   function updateText(file, text, srv) {
     file.text = srv.options.stripCRs ? text.replace(/\r\n/g, "\n") : text;
-    infer.withContext(srv.cx, function() {
-      file.ast = infer.parse(file.text, srv.passes, {directSourceFile: file, allowReturnOutsideFunction: true});
+    infer.withContext(srv.cx, function () {
+      file.ast = infer.parse(file.text, srv.passes, { directSourceFile: file, allowReturnOutsideFunction: true });
     });
     file.lineOffsets = null;
   }
 
-  var Server = exports.Server = function(options) {
+  var Server = exports.Server = function (options) {
     this.cx = null;
     this.options = options || {};
     for (var o in defaultOptions) if (!options.hasOwnProperty(o))
@@ -111,12 +112,12 @@
     this.reset();
   };
   Server.prototype = signal.mixin({
-    addFile: function(name, /*optional*/ text, parent) {
+    addFile: function (name, /*optional*/ text, parent) {
       // Don't crash when sloppy plugins pass non-existent parent ids
       if (parent && !(parent in this.fileMap)) parent = null;
       ensureFile(this, name, parent, text);
     },
-    delFile: function(name) {
+    delFile: function (name) {
       var file = this.findFile(name);
       if (file) {
         this.needsPurge.push(file.name);
@@ -124,7 +125,7 @@
         delete this.fileMap[name];
       }
     },
-    reset: function() {
+    reset: function () {
       this.signal("reset");
       this.cx = new infer.Context(this.defs, this);
       this.uses = 0;
@@ -135,36 +136,36 @@
       }
     },
 
-    request: function(doc, c) {
+    request: function (doc, c) {
       var inv = invalidDoc(doc);
       if (inv) return c(inv);
 
       var self = this;
-      doRequest(this, doc, function(err, data) {
+      doRequest(this, doc, function (err, data) {
         c(err, data);
         if (self.uses > 40) {
           self.reset();
-          analyzeAll(self, null, function(){});
+          analyzeAll(self, null, function () { });
         }
       });
     },
 
-    findFile: function(name) {
+    findFile: function (name) {
       return this.fileMap[name];
     },
 
-    flush: function(c) {
+    flush: function (c) {
       var cx = this.cx;
-      analyzeAll(this, null, function(err) {
+      analyzeAll(this, null, function (err) {
         if (err) return c(err);
         infer.withContext(cx, c);
       });
     },
 
-    startAsyncAction: function() {
+    startAsyncAction: function () {
       ++this.pending;
     },
-    finishAsyncAction: function(err) {
+    finishAsyncAction: function (err) {
       if (err) this.asyncError = err;
       if (--this.pending === 0) this.signal("everythingFetched");
     }
@@ -190,7 +191,7 @@
 
     var timeBudget = typeof doc.timeout == "number" ? [doc.timeout] : null;
     if (!query) {
-      analyzeAll(srv, timeBudget, function(){});
+      analyzeAll(srv, timeBudget, function () { });
       return;
     }
 
@@ -200,7 +201,7 @@
       if (!/^#/.test(query.file)) ensureFile(srv, query.file, null);
     }
 
-    analyzeAll(srv, timeBudget, function(err) {
+    analyzeAll(srv, timeBudget, function (err) {
       if (err) return c(err);
       var file = queryType.takesFile && resolveFile(srv, files, query.file);
       if (queryType.fullFile && file.type == "part")
@@ -216,12 +217,12 @@
         }
         c(null, result);
       }
-      infer.withContext(srv.cx, timeBudget ? function() { infer.withTimeout(timeBudget[0], run); } : run);
+      infer.withContext(srv.cx, timeBudget ? function () { infer.withTimeout(timeBudget[0], run); } : run);
     });
   }
 
   function analyzeFile(srv, file) {
-    infer.withContext(srv.cx, function() {
+    infer.withContext(srv.cx, function () {
       file.scope = srv.cx.topScope;
       srv.signal("beforeLoad", file);
       infer.analyze(file.ast, file.name, file.scope, srv.passes);
@@ -254,7 +255,7 @@
       updateText(file, text, srv);
     } else if (srv.options.async) {
       srv.startAsyncAction();
-      srv.options.getFile(name, function(err, text) {
+      srv.options.getFile(name, function (err, text) {
         updateText(file, text || "", srv);
         srv.finishAsyncAction(err);
       });
@@ -265,11 +266,11 @@
 
   function fetchAll(srv, c) {
     var done = true, returned = false;
-    srv.files.forEach(function(file) {
+    srv.files.forEach(function (file) {
       if (file.text != null) return;
       if (srv.options.async) {
         done = false;
-        srv.options.getFile(file.name, function(err, text) {
+        srv.options.getFile(file.name, function (err, text) {
           if (err && !returned) { returned = true; return c(err); }
           updateText(file, text || "", srv);
           fetchAll(srv, c);
@@ -284,7 +285,7 @@
   }
 
   function waitOnFetch(srv, timeBudget, c) {
-    var done = function() {
+    var done = function () {
       srv.off("everythingFetched", done);
       clearTimeout(timeout);
       analyzeAll(srv, timeBudget, c);
@@ -299,7 +300,7 @@
     var e = srv.fetchError;
     if (e) { srv.fetchError = null; return c(e); }
 
-    if (srv.needsPurge.length > 0) infer.withContext(srv.cx, function() {
+    if (srv.needsPurge.length > 0) infer.withContext(srv.cx, function () {
       infer.purge(srv.needsPurge);
       srv.needsPurge.length = 0;
     });
@@ -314,7 +315,7 @@
         if (file.text == null) done = false;
         else if (file.scope == null && !file.excluded) toAnalyze.push(file);
       }
-      toAnalyze.sort(function(a, b) {
+      toAnalyze.sort(function (a, b) {
         return parentDepth(srv, a.parent) - parentDepth(srv, b.parent);
       });
       for (var j = 0; j < toAnalyze.length; j++) {
@@ -323,7 +324,7 @@
           file.excluded = true;
         } else if (timeBudget) {
           var startTime = +new Date;
-          infer.withTimeout(timeBudget[0], function() { analyzeFile(srv, file); });
+          infer.withTimeout(timeBudget[0], function () { analyzeFile(srv, file); });
           timeBudget[0] -= +new Date - startTime;
         } else {
           analyzeFile(srv, file);
@@ -342,7 +343,7 @@
 
   function findMatchingPosition(line, file, near) {
     var pos = Math.max(0, near - 500), closest = null;
-    if (!/^\s*$/.test(line)) for (;;) {
+    if (!/^\s*$/.test(line)) for (; ;) {
       var found = file.indexOf(line, pos);
       if (found < 0 || found > near + 500) break;
       if (closest == null || Math.abs(closest - near) > Math.abs(found - near))
@@ -353,7 +354,7 @@
   }
 
   function scopeDepth(s) {
-    for (var i = 0; s; ++i, s = s.prev) {}
+    for (var i = 0; s; ++i, s = s.prev) { }
     return i;
   }
 
@@ -375,20 +376,20 @@
 
     var realFile = file.backing = srv.findFile(file.name);
     var offset;
-    file.offset = offset = resolvePos(realFile, file.offsetLines == null ? file.offset : {line: file.offsetLines, ch: 0}, true);
+    file.offset = offset = resolvePos(realFile, file.offsetLines == null ? file.offset : { line: file.offsetLines, ch: 0 }, true);
     var line = firstLine(file.text);
     var foundPos = findMatchingPosition(line, realFile.text, offset);
     var pos = foundPos == null ? Math.max(0, realFile.text.lastIndexOf("\n", offset)) : foundPos;
     var inObject, atFunction;
 
-    infer.withContext(srv.cx, function() {
+    infer.withContext(srv.cx, function () {
       infer.purge(file.name, pos, pos + file.text.length);
 
       var text = file.text, m;
       if (m = text.match(/(?:"([^"]*)"|([\w$]+))\s*:\s*function\b/)) {
         var objNode = walk.findNodeAround(file.backing.ast, pos, "ObjectExpression");
         if (objNode && objNode.node.objType)
-          inObject = {type: objNode.node.objType, prop: m[2] || m[1]};
+          inObject = { type: objNode.node.objType, prop: m[2] || m[1] };
       }
       if (foundPos && (m = line.match(/^(.*?)\bfunction\b/))) {
         var cut = m[1].length, white = "";
@@ -400,7 +401,7 @@
       var scopeStart = infer.scopeAt(realFile.ast, pos, realFile.scope);
       var scopeEnd = infer.scopeAt(realFile.ast, pos + text.length, realFile.scope);
       var scope = file.scope = scopeDepth(scopeStart) < scopeDepth(scopeEnd) ? scopeEnd : scopeStart;
-      file.ast = infer.parse(text, srv.passes, {directSourceFile: file, allowReturnOutsideFunction: true});
+      file.ast = infer.parse(text, srv.passes, { directSourceFile: file, allowReturnOutsideFunction: true });
       infer.analyze(file.ast, file.name, scope, srv.passes);
 
       // This is a kludge to tie together the function types (if any)
@@ -431,7 +432,7 @@
 
   function astSize(node) {
     var size = 0;
-    walk.simple(node, {Expression: function() { ++size; }});
+    walk.simple(node, { Expression: function () { ++size; } });
     return size;
   }
 
@@ -445,7 +446,7 @@
   }
 
   function budgetName(srv, file) {
-    for (;;) {
+    for (; ;) {
       var parent = srv.findFile(file.parent);
       if (!parent.parent) break;
       file = parent;
@@ -511,7 +512,7 @@
     return pos;
   }
 
-  var resolvePos = exports.resolvePos = function(file, pos, tolerant) {
+  var resolvePos = exports.resolvePos = function (file, pos, tolerant) {
     if (typeof pos != "number") {
       var lineStart = findLineStart(file, pos.line);
       if (lineStart == null) {
@@ -529,23 +530,23 @@
   };
 
   function asLineChar(file, pos) {
-    if (!file) return {line: 0, ch: 0};
+    if (!file) return { line: 0, ch: 0 };
     var offsets = file.lineOffsets || (file.lineOffsets = [0]);
     var text = file.text, line, lineStart;
     for (var i = offsets.length - 1; i >= 0; --i) if (offsets[i] <= pos) {
       line = i * offsetSkipLines;
       lineStart = offsets[i];
     }
-    for (;;) {
+    for (; ;) {
       var eol = text.indexOf("\n", lineStart);
       if (eol >= pos || eol < 0) break;
       lineStart = eol + 1;
       ++line;
     }
-    return {line: line, ch: pos - lineStart};
+    return { line: line, ch: pos - lineStart };
   }
 
-  var outputPos = exports.outputPos = function(query, file, pos) {
+  var outputPos = exports.outputPos = function (query, file, pos) {
     if (query.lineCharPositions) {
       var out = asLineChar(file, pos);
       if (file.type == "part")
@@ -611,13 +612,13 @@
       // out when no prefix is provided.
       if ((objLit || query.omitObjectPrototype !== false) && obj == srv.cx.protos.Object && !word) return;
       if (query.filter !== false && word &&
-          (query.caseInsensitive ? prop.toLowerCase() : prop).indexOf(word) !== 0) return;
+        (query.caseInsensitive ? prop.toLowerCase() : prop).indexOf(word) !== 0) return;
       if (ignoreObj && ignoreObj.props[prop]) return;
       for (var i = 0; i < completions.length; ++i) {
         var c = completions[i];
         if ((wrapAsObjs ? c.name : c) == prop) return;
       }
-      var rec = wrapAsObjs ? {name: prop} : prop;
+      var rec = wrapAsObjs ? { name: prop } : prop;
       completions.push(rec);
 
       if (obj && (query.types || query.docs || query.urls || query.origins)) {
@@ -650,7 +651,7 @@
       } else if (isStringAround(exprAt.node, wordStart, wordEnd)) {
         var parent = infer.parentNode(exprAt.node, file.ast);
         if (parent.type == "MemberExpression" && parent.property == exprAt.node)
-          memberExpr = {node: parent, state: exprAt.state};
+          memberExpr = { node: parent, state: exprAt.state };
       } else if (exprAt.node.type == "ObjectExpression") {
         var objProp = pointInProp(exprAt.node, wordEnd);
         if (objProp) {
@@ -690,28 +691,30 @@
       if (objType) infer.forAllPropertiesOf(objType, gather);
 
       if (!completions.length && query.guess !== false && objType && objType.guessProperties)
-        objType.guessProperties(function(p, o, d) {if (p != prop && p != "✖") gather(p, o, d);});
+        objType.guessProperties(function (p, o, d) { if (p != prop && p != "✖") gather(p, o, d); });
       if (!completions.length && word.length >= 2 && query.guess !== false)
         for (var prop in srv.cx.props) gather(prop, srv.cx.props[prop][0], 0);
       hookname = "memberCompletion";
     } else {
       infer.forAllLocalsAt(file.ast, wordStart, file.scope, gather);
-      if (query.includeKeywords) jsKeywords.forEach(function(kw) {
-        gather(kw, null, 0, function(rec) { rec.isKeyword = true; });
+      if (query.includeKeywords) jsKeywords.forEach(function (kw) {
+        gather(kw, null, 0, function (rec) { rec.isKeyword = true; });
       });
       hookname = "variableCompletion";
     }
     if (srv.passes[hookname])
-      srv.passes[hookname].forEach(function(hook) {hook(file, wordStart, wordEnd, gather);});
+      srv.passes[hookname].forEach(function (hook) { hook(file, wordStart, wordEnd, gather); });
 
     if (query.sort !== false) completions.sort(compareCompletions);
     srv.cx.completingProperty = null;
 
-    return {start: outputPos(query, file, wordStart),
-            end: outputPos(query, file, wordEnd),
-            isProperty: !!prop,
-            isObjectKey: !!isKey,
-            completions: completions};
+    return {
+      start: outputPos(query, file, wordStart),
+      end: outputPos(query, file, wordEnd),
+      isProperty: !!prop,
+      isObjectKey: !!isKey,
+      completions: completions
+    };
   }
 
   function findProperties(srv, query) {
@@ -719,23 +722,25 @@
     for (var prop in srv.cx.props)
       if (prop != "<i>" && (!prefix || prop.indexOf(prefix) === 0)) found.push(prop);
     if (query.sort !== false) found.sort(compareCompletions);
-    return {completions: found};
+    return { completions: found };
   }
 
-  var findExpr = exports.findQueryExpr = function(file, query, wide) {
+  var findExpr = exports.findQueryExpr = function (file, query, wide) {
     if (query.end == null) throw ternError("missing .query.end field");
 
     if (query.variable) {
       var scope = infer.scopeAt(file.ast, resolvePos(file, query.end), file.scope);
-      return {node: {type: "Identifier", name: query.variable, start: query.end, end: query.end + 1},
-              state: scope};
+      return {
+        node: { type: "Identifier", name: query.variable, start: query.end, end: query.end + 1 },
+        state: scope
+      };
     } else {
       var start = query.start && resolvePos(file, query.start), end = resolvePos(file, query.end);
       var expr = infer.findExpressionAt(file.ast, start, end, file.scope);
       if (expr) return expr;
       expr = infer.findExpressionAround(file.ast, start, end, file.scope);
       if (expr && (expr.node.type == "ObjectExpression" || wide ||
-                   (start == null ? end : start) - expr.node.start < 20 || expr.node.end - end < 20))
+        (start == null ? end : start) - expr.node.start < 20 || expr.node.end - end < 20))
         return expr;
       return null;
     }
@@ -760,7 +765,7 @@
     }
     if (srv.passes["typeAt"]) {
       var pos = resolvePos(file, query.end);
-      srv.passes["typeAt"].forEach(function(hook) {
+      srv.passes["typeAt"].forEach(function (hook) {
         type = hook(file, pos, expr, type);
       });
     }
@@ -768,7 +773,7 @@
 
     var objProp;
     if (expr.node.type == "ObjectExpression" && query.end != null &&
-        (objProp = pointInProp(expr.node, resolvePos(file, query.end)))) {
+      (objProp = pointInProp(expr.node, resolvePos(file, query.end)))) {
       var name = objProp.key.name;
       var fromCx = ensureObj(infer.typeFromContext(file.ast, expr));
       if (fromCx && fromCx.hasProp(name)) {
@@ -800,10 +805,12 @@
     if (query.depth != null && typeof query.depth != "number")
       throw ternError(".query.depth must be a number");
 
-    var result = {guess: infer.didGuess(),
-                  type: infer.toString(exprType, query.depth),
-                  name: type && type.name,
-                  exprName: exprName};
+    var result = {
+      guess: infer.didGuess(),
+      type: infer.toString(exprType, query.depth),
+      name: type && type.name,
+      exprName: exprName
+    };
     if (type) storeTypeDocs(type, result);
     if (!result.doc && exprType.doc) result.doc = exprType.doc;
 
@@ -813,7 +820,7 @@
   function findDocs(srv, query, file) {
     var expr = findExpr(file, query);
     var type = findExprType(srv, query, file, expr);
-    var result = {url: type.url, doc: type.doc, type: infer.toString(type)};
+    var result = { url: type.url, doc: type.doc, type: infer.toString(type) };
     var inner = type.getType();
     if (inner) storeTypeDocs(inner, result);
     return clean(result);
@@ -825,28 +832,28 @@
     if (!out.origin) out.origin = type.origin;
     var ctor, boring = infer.cx().protos;
     if (!out.url && !out.doc && type.proto && (ctor = type.proto.hasCtor) &&
-        type.proto != boring.Object && type.proto != boring.Function && type.proto != boring.Array) {
+      type.proto != boring.Object && type.proto != boring.Function && type.proto != boring.Array) {
       out.url = ctor.url;
       out.doc = ctor.doc;
     }
   }
 
-  var getSpan = exports.getSpan = function(obj) {
+  var getSpan = exports.getSpan = function (obj) {
     if (!obj.origin) return;
     if (obj.originNode) {
       var node = obj.originNode;
       if (/^Function/.test(node.type) && node.id) node = node.id;
-      return {origin: obj.origin, node: node};
+      return { origin: obj.origin, node: node };
     }
-    if (obj.span) return {origin: obj.origin, span: obj.span};
+    if (obj.span) return { origin: obj.origin, span: obj.span };
   };
 
-  var storeSpan = exports.storeSpan = function(srv, query, span, target) {
+  var storeSpan = exports.storeSpan = function (srv, query, span, target) {
     target.origin = span.origin;
     if (span.span) {
       var m = /^(\d+)\[(\d+):(\d+)\]-(\d+)\[(\d+):(\d+)\]$/.exec(span.span);
-      target.start = query.lineCharPositions ? {line: Number(m[2]), ch: Number(m[3])} : Number(m[1]);
-      target.end = query.lineCharPositions ? {line: Number(m[5]), ch: Number(m[6])} : Number(m[4]);
+      target.start = query.lineCharPositions ? { line: Number(m[2]), ch: Number(m[3]) } : Number(m[1]);
+      target.end = query.lineCharPositions ? { line: Number(m[5]), ch: Number(m[6]) } : Number(m[4]);
     } else {
       var file = srv.findFile(span.origin);
       target.start = outputPos(query, file, span.node.start);
@@ -860,7 +867,7 @@
     if (infer.didGuess()) return {};
 
     var span = getSpan(type);
-    var result = {url: type.url, doc: type.doc, origin: type.origin};
+    var result = { url: type.url, doc: type.doc, origin: type.origin };
 
     if (type.types) for (var i = type.types.length - 1; i >= 0; --i) {
       var tp = type.types[i];
@@ -886,22 +893,24 @@
   function findRefsToVariable(srv, query, file, expr, checkShadowing) {
     var name = expr.node.name;
 
-    for (var scope = expr.state; scope && !(name in scope.props); scope = scope.prev) {}
+    for (var scope = expr.state; scope && !(name in scope.props); scope = scope.prev) { }
     if (!scope) throw ternError("Could not find a definition for " + name + " " + !!srv.cx.topScope.props.x);
 
     var type, refs = [];
     function storeRef(file) {
-      return function(node, scopeHere) {
+      return function (node, scopeHere) {
         if (checkShadowing) for (var s = scopeHere; s != scope; s = s.prev) {
           var exists = s.hasProp(checkShadowing);
           if (exists)
             throw ternError("Renaming `" + name + "` to `" + checkShadowing + "` would make a variable at line " +
-                            (asLineChar(file, node.start).line + 1) + " point to the definition at line " +
-                            (asLineChar(file, exists.name.start).line + 1));
+              (asLineChar(file, node.start).line + 1) + " point to the definition at line " +
+              (asLineChar(file, exists.name.start).line + 1));
         }
-        refs.push({file: file.name,
-                   start: outputPos(query, file, node.start),
-                   end: outputPos(query, file, node.end)});
+        refs.push({
+          file: file.name,
+          start: outputPos(query, file, node.start),
+          end: outputPos(query, file, node.end)
+        });
       };
     }
 
@@ -910,9 +919,9 @@
       if (checkShadowing) {
         for (var prev = scope.prev; prev; prev = prev.prev)
           if (checkShadowing in prev.props) break;
-        if (prev) infer.findRefs(scope.originNode, scope, checkShadowing, prev, function(node) {
+        if (prev) infer.findRefs(scope.originNode, scope, checkShadowing, prev, function (node) {
           throw ternError("Renaming `" + name + "` to `" + checkShadowing + "` would shadow the definition used at line " +
-                          (asLineChar(file, node.start).line + 1));
+            (asLineChar(file, node.start).line + 1));
         });
       }
       infer.findRefs(scope.originNode, scope, name, scope, storeRef(file));
@@ -924,7 +933,7 @@
       }
     }
 
-    return {refs: refs, type: type, name: name};
+    return { refs: refs, type: type, name: name };
   }
 
   function findRefsToProperty(srv, query, expr, prop) {
@@ -933,10 +942,12 @@
 
     var refs = [];
     function storeRef(file) {
-      return function(node) {
-        refs.push({file: file.name,
-                   start: outputPos(query, file, node.start),
-                   end: outputPos(query, file, node.end)});
+      return function (node) {
+        refs.push({
+          file: file.name,
+          start: outputPos(query, file, node.start),
+          end: outputPos(query, file, node.end)
+        });
       };
     }
     for (var i = 0; i < srv.files.length; ++i) {
@@ -944,7 +955,7 @@
       infer.findPropRefs(cur.ast, cur.scope, objType, prop.name, storeRef(cur));
     }
 
-    return {refs: refs, name: prop.name};
+    return { refs: refs, name: prop.name };
   }
 
   function findRefs(srv, query, file) {
@@ -973,7 +984,7 @@
 
     var data = findRefsToVariable(srv, query, file, expr, query.newName), refs = data.refs;
     delete data.refs;
-    data.files = srv.files.map(function(f){return f.name;});
+    data.files = srv.files.map(function (f) { return f.name; });
 
     var changes = data.changes = [];
     for (var i = 0; i < refs.length; ++i) {
@@ -986,7 +997,7 @@
   }
 
   function listFiles(srv) {
-    return {files: srv.files.map(function(f){return f.name;})};
+    return { files: srv.files.map(function (f) { return f.name; }) };
   }
 
   exports.version = "0.11.1";
