@@ -225,7 +225,7 @@ const assets = [
 
 ];
 
-self.addEventListener( 'install', async function () {
+this.addEventListener( 'install', async function () {
 
 	const cache = await caches.open( cacheName );
 
@@ -245,7 +245,7 @@ self.addEventListener( 'install', async function () {
 
 } );
 
-self.addEventListener( 'fetch', async function ( event ) {
+this.addEventListener( 'fetch', async function ( event ) {
 
 	const request = event.request;
 
