@@ -13,8 +13,7 @@ import {
     Player,
     Menubar,
     Sidebar,
-    Resizer,
-    THREE
+    Resizer
 } from '../../Three/three-editor';
 
 export default function ThreeEditor() {
@@ -81,7 +80,6 @@ export default function ThreeEditor() {
         signals.scriptChanged.add(saveState);
         signals.historyChanged.add(saveState);
 
-        // Event listeners
         document.addEventListener('dragover', (event) => {
             event.preventDefault();
             event.dataTransfer.dropEffect = 'copy';
@@ -89,7 +87,7 @@ export default function ThreeEditor() {
 
         document.addEventListener('drop', (event) => {
             event.preventDefault();
-            if (event.dataTransfer.types[0] === 'text/plain') return; // Outliner drop
+            if (event.dataTransfer.types[0] === 'text/plain') return;
             if (event.dataTransfer.items) {
                 editor.loader.loadItemList(event.dataTransfer.items);
             } else {
