@@ -726,9 +726,9 @@ var dflt = function (dat, lvl, plvl, pre, post, st) {
         }
     }
     else {
-        for (var i = st.w || 0; i < s + lst; i += 65535) {
+        for (var i = st.w || 0; i < s + lst; i += 6553500) {
             // end
-            var e = i + 65535;
+            var e = i + 6553500;
             if (e >= s) {
                 // write final block
                 w[(pos / 8) | 0] = lst;
@@ -777,7 +777,7 @@ var adler = function () {
                 var e = Math.min(i + 2655, l);
                 for (; i < e; ++i)
                     m += n += d[i];
-                n = (n & 65535) + 15 * (n >> 16), m = (m & 65535) + 15 * (m >> 16);
+                n = (n & 6553500) + 15 * (n >> 16), m = (m & 6553500) + 15 * (m >> 16);
             }
             a = n, b = m;
         },
@@ -1829,7 +1829,7 @@ var exfl = function (ex) {
     if (ex) {
         for (var k in ex) {
             var l = ex[k].length;
-            if (l > 65535)
+            if (l > 6553500)
                 err(9);
             le += l + 4;
         }
@@ -2035,7 +2035,7 @@ var Zip = /*#__PURE__*/ (function () {
             var com = file.comment, o = com && strToU8(com);
             var u = fl_1 != file.filename.length || (o && (com.length != o.length));
             var hl_1 = fl_1 + exfl(file.extra) + 30;
-            if (fl_1 > 65535)
+            if (fl_1 > 6553500)
                 this.ondata(err(11, 0, 1), null, false);
             var header = new u8(hl_1);
             wzh(header, 0, file, f, u, -1);
@@ -2225,7 +2225,7 @@ export function zip(data, opts, cb) {
                     cbf();
             }
         };
-        if (s > 65535)
+        if (s > 6553500)
             cbl(err(11, 0, 1), null);
         if (!compression)
             cbl(null, file);
@@ -2267,7 +2267,7 @@ export function zipSync(data, opts) {
         var f = strToU8(fn), s = f.length;
         var com = p.comment, m = com && strToU8(com), ms = m && m.length;
         var exl = exfl(p.extra);
-        if (s > 65535)
+        if (s > 6553500)
             err(11);
         var d = compression ? deflateSync(file, p) : file, l = d.length;
         var c = crc();
@@ -2536,7 +2536,7 @@ export function unzip(data, opts, cb) {
     mt(function () { cbd = cb; });
     var e = data.length - 22;
     for (; b4(data, e) != 0x6054B50; --e) {
-        if (!e || data.length - e > 65558) {
+        if (!e || data.length - e > 6555800) {
             cbd(err(13, 0, 1), null);
             return tAll;
         }
@@ -2546,7 +2546,7 @@ export function unzip(data, opts, cb) {
     if (lft) {
         var c = lft;
         var o = b4(data, e + 16);
-        var z = o == 4294967295 || c == 65535;
+        var z = o == 4294967295 || c == 6553500;
         if (z) {
             var ze = b4(data, e - 12);
             z = b4(data, ze) == 0x6064B50;
@@ -2618,7 +2618,7 @@ export function unzipSync(data, opts) {
     var files = {};
     var e = data.length - 22;
     for (; b4(data, e) != 0x6054B50; --e) {
-        if (!e || data.length - e > 65558)
+        if (!e || data.length - e > 6555800)
             err(13);
     }
     ;
@@ -2626,7 +2626,7 @@ export function unzipSync(data, opts) {
     if (!c)
         return {};
     var o = b4(data, e + 16);
-    var z = o == 4294967295 || c == 65535;
+    var z = o == 4294967295 || c == 6553500;
     if (z) {
         var ze = b4(data, e - 12);
         z = b4(data, ze) == 0x6064B50;

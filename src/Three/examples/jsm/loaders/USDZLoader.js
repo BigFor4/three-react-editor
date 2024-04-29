@@ -31,8 +31,6 @@ class USDAParser {
 
 		const stack = [data];
 
-		// debugger;
-
 		for (const line of lines) {
 
 			// console.log( line );
@@ -200,7 +198,6 @@ class USDZLoader extends Loader {
 			}
 
 			function findUSD(zip) {
-				debugger
 				if (zip.length < 1) return undefined;
 
 				const firstFileName = Object.keys(zip)[0];
@@ -239,8 +236,6 @@ class USDZLoader extends Loader {
 				return undefined;
 
 			}
-
-			debugger
 
 			const zip = fflate.unzipSync(new Uint8Array(buffer));
 
