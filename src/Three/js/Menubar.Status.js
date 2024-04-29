@@ -9,7 +9,10 @@ function MenubarStatus( editor ) {
 
 	const container = new UIPanel();
 	container.setClass( 'menu right' );
-
+	const version = new UIText( 'r' + THREE.REVISION );
+	version.setClass( 'title' );
+	version.setOpacity( 0.0 );
+	container.add( version );
 	const autosave = new UIBoolean( editor.config.getKey( 'autosave' ), strings.getKey( 'menubar/status/autosave' ) );
 	autosave.text.setColor( '#888' );
 	autosave.onChange( function () {
@@ -38,11 +41,6 @@ function MenubarStatus( editor ) {
 		autosave.text.setTextDecoration( 'none' );
 
 	} );
-
-	const version = new UIText( 'r' + THREE.REVISION );
-	version.setClass( 'title' );
-	version.setOpacity( 0.5 );
-	container.add( version );
 
 	return container;
 

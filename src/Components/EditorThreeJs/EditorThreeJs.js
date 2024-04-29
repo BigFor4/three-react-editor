@@ -106,15 +106,6 @@ export default function ThreeEditor() {
             }
         }
 
-        // Service Worker registration
-        if ('serviceWorker' in navigator) {
-            try {
-                navigator.serviceWorker.register('sw.js');
-            } catch (error) {
-                console.error('ServiceWorker registration failed:', error);
-            }
-        }
-
     }, []);
 
     return <div id="three-editor-container" />;
