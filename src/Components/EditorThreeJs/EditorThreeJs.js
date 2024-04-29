@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
-import '../../Three/css/main.css'
-import '../../Three/js/libs/codemirror/codemirror.css'
-import '../../Three/js/libs/codemirror/theme/monokai.css'
-import '../../Three/js/libs/codemirror/addon/dialog.css'
-import '../../Three/js/libs/codemirror/addon/show-hint.css'
-import '../../Three/js/libs/codemirror/addon/tern.css'
+import React, { useEffect, useRef } from 'react';
+import '../../Three/css/main.css';
+import '../../Three/js/libs/codemirror/codemirror.css';
+import '../../Three/js/libs/codemirror/theme/monokai.css';
+import '../../Three/js/libs/codemirror/addon/dialog.css';
+import '../../Three/js/libs/codemirror/addon/show-hint.css';
+import '../../Three/js/libs/codemirror/addon/tern.css';
 import {
-    THREE,
     Editor,
     Viewport,
     Toolbar,
@@ -14,9 +13,19 @@ import {
     Player,
     Menubar,
     Sidebar,
-    Resizer
+    Resizer,
+    THREE
 } from '../../Three/three-editor';
+
 export default function ThreeEditor() {
+    const viewportRef = useRef(null);
+    const toolbarRef = useRef(null);
+    const scriptRef = useRef(null);
+    const playerRef = useRef(null);
+    const sidebarRef = useRef(null);
+    const menubarRef = useRef(null);
+    const resizerRef = useRef(null);
+
     useEffect(() => {
         window.URL = window.URL || window.webkitURL;
         window.BlobBuilder =
@@ -35,13 +44,13 @@ export default function ThreeEditor() {
         const menubar = new Menubar(editor);
         const resizer = new Resizer(editor);
 
-        document.body.appendChild(viewport.dom);
-        document.body.appendChild(toolbar.dom);
-        document.body.appendChild(script.dom);
-        document.body.appendChild(player.dom);
-        document.body.appendChild(sidebar.dom);
-        document.body.appendChild(menubar.dom);
-        document.body.appendChild(resizer.dom);
+        viewportRef.current.appendChild(viewport.dom);
+        toolbarRef.current.appendChild(toolbar.dom);
+        scriptRef.current.appendChild(script.dom);
+        playerRef.current.appendChild(player.dom);
+        sidebarRef.current.appendChild(sidebar.dom);
+        menubarRef.current.appendChild(menubar.dom);
+        resizerRef.current.appendChild(resizer.dom);
 
         editor.storage.init(() => {
             editor.storage.get((state) => {
@@ -56,7 +65,7 @@ export default function ThreeEditor() {
         });
 
         function saveState() {
-
+            // Implement your save state logic here
         }
 
         const signals = editor.signals;
@@ -87,26 +96,20 @@ export default function ThreeEditor() {
                 editor.loader.loadFiles(event.dataTransfer.files);
             }
         });
-
         window.addEventListener('resize', () => {
             editor.signals.windowResize.dispatch();
         });
-
-        // Check and load state from hash
-        const hash = window.location.hash;
-        if (hash.slice(1, 6) === 'file=') {
-            const file = hash.slice(6);
-            if (window.window.confirm('Any unsaved data will be lost. Are you sure?')) {
-                const loader = new THREE.FileLoader();
-                loader.crossOrigin = '';
-                loader.load(file, (text) => {
-                    editor.clear();
-                    editor.fromJSON(JSON.parse(text));
-                });
-            }
-        }
-
+        editor.signals.windowResize.dispatch();
     }, []);
-
-    return <div id="three-editor-container" />;
+    return (
+        <div>
+            <div ref={viewportRef}></div>
+            <div ref={toolbarRef}></div>
+            <div ref={scriptRef}></div>
+            <div ref={playerRef}></div>
+            <div ref={sidebarRef}></div>
+            <div ref={menubarRef}></div>
+            <div ref={resizerRef}></div>
+        </div>
+    );
 }
