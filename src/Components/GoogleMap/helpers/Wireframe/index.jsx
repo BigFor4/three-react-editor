@@ -1,0 +1,211 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { xml2js } from 'xml-js';
+import colorLineAndGuter from './listColorLineClassificationAndGutter.json';
+import { Wireframe } from './wireframeManager';
+
+const titles = [
+  {
+    title: 'ID',
+  },
+  {
+    title: 'Area',
+  },
+  {
+    title: 'Area(ft)',
+  },
+  {
+    title: 'Perimeter',
+  },
+  {
+    title: 'Perimeter(ft)',
+  },
+];
+const getRandomColor = () => {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+const parseData = async (responseData, map, maps) => {
+  const parsedData = [];
+  const polygons = []
+  const bounds = []
+  if (responseData.json && responseData.xml) {
+    try {
+      const response = await axios.get(responseData.json);
+      const responseXml = await axios.get(responseData.xml);
+
+      const { data } = response;
+      const xmlString = responseXml.data;
+      const xmlData = xml2js(xmlString, { compact: true });
+      const ROOF = xmlData['STRUCTURES']['ROOF'];
+      const wireFrameStructure = new Wireframe(ROOF);
+      data.forEach(item => {
+        const rowId = item.id;
+        let face = undefined;
+
+        face = wireFrameStructure.FaceCollections[`F${rowId}`];
+
+        if (face) {
+
+          const positions = face.Polygon.Positions.map(x => ({ lat: x.lat, lng: x.lng }))
+          const lines = face.Polygon.Lines.map(line => {
+            return {
+              lineId: line.data?.LineId,
+              color: colorLineAndGuter?.[line?.data?.Type] || colorLineAndGuter.default3D,
+              positions: line.points.map(point => ({ lat: point.lat, lng: point.lng }))
+            }
+          })
+          lines.forEach(line => {
+            const flightPath = new maps.Polyline({
+              path: line.positions,
+              lineId: line.lineId, 
+              geodesic: true,
+              strokeColor: line.color,
+              strokeOpacity: 1.0,
+              strokeWeight: 3,
+            });
+            
+            maps.event.addListener(flightPath, 'click', function (event) {
+              console.log("click polygon: " + line.lineId)
+              var randomColor = getRandomColor();
+              flightPath.setOptions({
+                strokeColor: randomColor,
+              });
+            });
+            flightPath.setMap(map);
+          })
+          const polygon = new maps.Polygon({
+            paths: positions,
+            strokeColor: '#1BC3D0',
+            strokeOpacity: 0,
+            strokeWeight: 3,
+            fillColor: '#1BC3D0',
+            fillOpacity: 0.35,
+          });
+          maps.event.addListener(polygon, 'click', function (event) {
+            var randomColor = getRandomColor();
+            console.log("click polygon: " + `F${rowId}`)
+            polygon.setOptions({
+              fillColor: randomColor,
+            });
+          });
+          polygons.push(polygon)
+          polygon.setMap(map);
+
+          parsedData.push({
+            id: Number(item.id) + 1,
+            area: parseFloat(item.area).toFixed(2),
+            areaFt: parseFloat(item.area_in_feet).toFixed(2),
+            perimeter: parseFloat(item.perimeter).toFixed(2),
+            perimeterFt: parseFloat(item.perimeter_in_feet).toFixed(2),
+            // polygon: polygon
+          });
+
+          positions.forEach((el) => {
+            const bound = new maps.LatLngBounds()
+            const myLatLng = new maps.LatLng(el)
+            bound.extend(myLatLng)
+            bounds.push(bound)
+          })
+        }
+      });
+    } catch (error) { }
+  }
+  return {
+    parsedData,
+    polygons
+  };
+};
+
+const WireframeInfo = ({ data, map, maps, onClose }) => {
+  const [tableData, setTableData] = useState(null);
+  useEffect(() => {
+    const initialWireframe = async () => {
+      if (data?.xml && data?.json) {
+        const wireframe = await parseData(data, map, maps)
+        setTableData(wireframe.parsedData);
+      }
+    }
+    initialWireframe()
+  }, [data, maps, map]);
+
+
+  const handleHightLight = (polygon) => {
+    if (polygon) {
+      polygon.setOptions({
+        fillOpacity: 0.7
+      })
+    }
+  }
+
+  const handleRemoveHightLight = (polygon) => {
+    if (polygon) {
+      polygon.setOptions({
+        fillOpacity: 0.35
+      })
+    }
+  }
+
+  const zoomToWireframe = (polygon) => {
+    maps.Polygon.prototype.getBounds = function () {
+      var bounds = new maps.LatLngBounds();
+      var paths = this.getPaths();
+      var path;
+      for (var i = 0; i < paths.getLength(); i++) {
+        path = paths.getAt(i);
+        for (var ii = 0; ii < path.getLength(); ii++) {
+          bounds.extend(path.getAt(ii));
+        }
+      }
+      return bounds;
+    }
+    map.fitBounds(polygon.getBounds());
+  }
+
+  return (
+    <div className="overlay-modal overlay-modal-500px google-map-modal scroll-wrapper" onScroll={() => { }}>
+      <div className="overlay-modal-header">
+        <span>Info</span>
+        <div className="btn-group">
+          <div className="info-close"></div>
+        </div>
+      </div>
+      <table className="table-info-wireframe google-map-table">
+        <thead>
+          <tr>
+            {titles.map(el => (
+              <th key={el.title}>{el.title}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tableData &&
+            tableData.map((el, index) => {
+              return (
+                <tr
+                  id={`F${index}`}
+                  key={`F${index}`}
+                  onClick={() => zoomToWireframe(el.polygon)}
+                  onMouseOver={() => handleHightLight(el.polygon)}
+                  onMouseLeave={() => handleRemoveHightLight(el.polygon)}
+                >
+                  <td>{el.id}</td>
+                  <td>{el.area}</td>
+                  <td>{el.areaFt}</td>
+                  <td>{el.perimeter}</td>
+                  <td>{el.perimeterFt}</td>
+                  <td>{el.pitch}</td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default WireframeInfo;

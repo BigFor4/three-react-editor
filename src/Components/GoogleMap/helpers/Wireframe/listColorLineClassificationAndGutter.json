@@ -1,0 +1,13 @@
+{
+    "eave" : "#00A24B",
+    "hip" : "#A7519F",
+    "ridge" : "#454DA0",
+    "rake" : "#F47B20",
+    "valley" : "#EF4023",
+    "flashing" : "#8DC63F",
+    "parapet" : "#4984C4",
+    "default" : "#000000",
+    "default3D" : "#7FFFD4",
+    "gutter" : "#4984C4",
+    "structure" : "#000000"
+}
