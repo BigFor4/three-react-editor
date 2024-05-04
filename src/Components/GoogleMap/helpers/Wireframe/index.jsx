@@ -3,7 +3,6 @@ import axios from 'axios';
 import { xml2js } from 'xml-js';
 import colorLineAndGuter from './listColorLineClassificationAndGutter.json';
 import { Wireframe } from './wireframeManager';
-
 const titles = [
   {
     title: 'ID',
@@ -29,10 +28,12 @@ const getRandomColor = () => {
   }
   return color;
 }
+
 const parseData = async (responseData, map, maps) => {
   const parsedData = [];
   const polygons = []
   const bounds = []
+  let layerMap = [];
   if (responseData.json && responseData.xml) {
     try {
       const response = await axios.get(responseData.json);
@@ -62,37 +63,39 @@ const parseData = async (responseData, map, maps) => {
           lines.forEach(line => {
             const flightPath = new maps.Polyline({
               path: line.positions,
-              lineId: line.lineId, 
+              lineId: line.lineId,
               geodesic: true,
               strokeColor: line.color,
               strokeOpacity: 1.0,
               strokeWeight: 3,
             });
-            
-            maps.event.addListener(flightPath, 'click', function (event) {
-              console.log("click polygon: " + line.lineId)
-              var randomColor = getRandomColor();
-              flightPath.setOptions({
-                strokeColor: randomColor,
-              });
-            });
+            layerMap.push(flightPath);
+            // maps.event.addListener(flightPath, 'click', function (event) {
+            //   console.log("click polygon: " + line.lineId)
+            //   var randomColor = getRandomColor();
+            //   flightPath.setOptions({
+            //     strokeColor: randomColor,
+            //   });
+            // });
             flightPath.setMap(map);
-          })
+          });
           const polygon = new maps.Polygon({
             paths: positions,
+            polygonId: `F${rowId}`,
             strokeColor: '#1BC3D0',
             strokeOpacity: 0,
             strokeWeight: 3,
             fillColor: '#1BC3D0',
             fillOpacity: 0.35,
           });
-          maps.event.addListener(polygon, 'click', function (event) {
-            var randomColor = getRandomColor();
-            console.log("click polygon: " + `F${rowId}`)
-            polygon.setOptions({
-              fillColor: randomColor,
-            });
-          });
+          layerMap.push(polygon);
+          // maps.event.addListener(polygon, 'click', function (event) {
+          //   var randomColor = getRandomColor();
+          //   console.log("click polygon: " + `F${rowId}`)
+          //   polygon.setOptions({
+          //     fillColor: randomColor,
+          //   });
+          // });
           polygons.push(polygon)
           polygon.setMap(map);
 
@@ -117,22 +120,52 @@ const parseData = async (responseData, map, maps) => {
   }
   return {
     parsedData,
-    polygons
+    polygons,
+    layerMap
   };
 };
-
-const WireframeInfo = ({ data, map, maps, onClose }) => {
+const WireframeInfo = ({ data, map, maps }) => {
+  const [allLayerMap, setAllLayerMap] = useState([]);
   const [tableData, setTableData] = useState(null);
   useEffect(() => {
     const initialWireframe = async () => {
       if (data?.xml && data?.json) {
+        allLayerMap.forEach(layer => {
+          layer.setMap(null);
+        })
         const wireframe = await parseData(data, map, maps)
         setTableData(wireframe.parsedData);
+        setAllLayerMap(wireframe.layerMap)
       }
     }
     initialWireframe()
   }, [data, maps, map]);
 
+  useEffect(() => {
+    if (allLayerMap.length > 0) {
+      allLayerMap.forEach((layer) => {
+        layer.addListener('click', function (event) {
+          let lat = event.latLng.lat();
+          let lng = event.latLng.lng();
+          const clickedLatLng = new maps.LatLng(lat, lng);
+          const bounds = new maps.LatLngBounds(
+            new maps.LatLng(lat - 0.01, lng - 0.01),
+            new maps.LatLng(lat + 0.01, lng + 0.01)
+          );
+          const nearbyShapes = [];
+          allLayerMap.map(item => {
+            if (item.lineId) {
+              if (maps.geometry.poly.containsLocation(clickedLatLng, item, bounds)) {
+                nearbyShapes.push(item.lineId);
+              }
+            }
+          })
+          console.log(nearbyShapes)
+        });
+      });
+
+    }
+  }, [allLayerMap])
 
   const handleHightLight = (polygon) => {
     if (polygon) {
