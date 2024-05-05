@@ -70,13 +70,13 @@ const parseData = async (responseData, map, maps) => {
               strokeWeight: 3,
             });
             layerMap.push(flightPath);
-            // maps.event.addListener(flightPath, 'click', function (event) {
-            //   console.log("click polygon: " + line.lineId)
-            //   var randomColor = getRandomColor();
-            //   flightPath.setOptions({
-            //     strokeColor: randomColor,
-            //   });
-            // });
+            maps.event.addListener(flightPath, 'click', function (event) {
+              console.log("click line: " + line.lineId)
+              var randomColor = getRandomColor();
+              flightPath.setOptions({
+                strokeColor: randomColor,
+              });
+            });
             flightPath.setMap(map);
           });
           const polygon = new maps.Polygon({
@@ -89,13 +89,13 @@ const parseData = async (responseData, map, maps) => {
             fillOpacity: 0.35,
           });
           layerMap.push(polygon);
-          // maps.event.addListener(polygon, 'click', function (event) {
-          //   var randomColor = getRandomColor();
-          //   console.log("click polygon: " + `F${rowId}`)
-          //   polygon.setOptions({
-          //     fillColor: randomColor,
-          //   });
-          // });
+          maps.event.addListener(polygon, 'click', function (event) {
+            var randomColor = getRandomColor();
+            console.log("click polygon: " + `F${rowId}`)
+            polygon.setOptions({
+              fillColor: randomColor,
+            });
+          });
           polygons.push(polygon)
           polygon.setMap(map);
 
@@ -105,7 +105,6 @@ const parseData = async (responseData, map, maps) => {
             areaFt: parseFloat(item.area_in_feet).toFixed(2),
             perimeter: parseFloat(item.perimeter).toFixed(2),
             perimeterFt: parseFloat(item.perimeter_in_feet).toFixed(2),
-            // polygon: polygon
           });
 
           positions.forEach((el) => {
@@ -140,32 +139,6 @@ const WireframeInfo = ({ data, map, maps }) => {
     }
     initialWireframe()
   }, [data, maps, map]);
-
-  useEffect(() => {
-    if (allLayerMap.length > 0) {
-      allLayerMap.forEach((layer) => {
-        layer.addListener('click', function (event) {
-          let lat = event.latLng.lat();
-          let lng = event.latLng.lng();
-          const clickedLatLng = new maps.LatLng(lat, lng);
-          const bounds = new maps.LatLngBounds(
-            new maps.LatLng(lat - 0.01, lng - 0.01),
-            new maps.LatLng(lat + 0.01, lng + 0.01)
-          );
-          const nearbyShapes = [];
-          allLayerMap.map(item => {
-            if (item.lineId) {
-              if (maps.geometry.poly.containsLocation(clickedLatLng, item, bounds)) {
-                nearbyShapes.push(item.lineId);
-              }
-            }
-          })
-          console.log(nearbyShapes)
-        });
-      });
-
-    }
-  }, [allLayerMap])
 
   const handleHightLight = (polygon) => {
     if (polygon) {
